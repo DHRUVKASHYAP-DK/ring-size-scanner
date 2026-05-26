@@ -20,16 +20,17 @@
       --radius-lg: 28px;
       --radius-md: 18px;
       --radius-sm: 12px;
-    }* {
-  box-sizing: border-box;
-}
+    }* { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
     radial-gradient(circle at top left, rgba(184, 137, 56, 0.14), transparent 34rem),
@@ -38,15 +39,9 @@ body {
   line-height: 1.5;
 }
 
-button,
-input,
-select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+img, video, canvas { max-width: 100%; }
 
 .page {
   width: min(1180px, calc(100% - 32px));
@@ -58,7 +53,7 @@ button {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 22px 0;
+  padding: 18px 0;
 }
 
 .brand {
@@ -68,9 +63,17 @@ button {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  min-width: 0;
+}
+
+.brand span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .brand-mark {
+  flex: 0 0 auto;
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -86,19 +89,17 @@ button {
   gap: 18px;
   color: var(--muted);
   font-size: 14px;
+  white-space: nowrap;
 }
 
-.nav-links a {
-  color: inherit;
-  text-decoration: none;
-}
+.nav-links a { color: inherit; text-decoration: none; }
 
 .hero {
   display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
   gap: 28px;
   align-items: center;
-  padding: 34px 0 52px;
+  padding: 28px 0 42px;
 }
 
 .eyebrow {
@@ -115,37 +116,24 @@ button {
   margin-bottom: 18px;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   margin: 0;
   letter-spacing: -0.04em;
-  line-height: 1.03;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
 }
 
-h1 {
-  font-size: clamp(42px, 7vw, 78px);
-  max-width: 760px;
-}
-
-h2 {
-  font-size: clamp(30px, 4.2vw, 48px);
-  margin-bottom: 12px;
-}
-
-h3 {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
+h1 { font-size: clamp(38px, 6.8vw, 78px); max-width: 760px; }
+h2 { font-size: clamp(28px, 4.2vw, 48px); margin-bottom: 12px; }
+h3 { font-size: 22px; margin-bottom: 8px; }
 
 .hero p {
   color: var(--muted);
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 18px);
   max-width: 620px;
 }
 
-.hero-actions,
-.button-row {
+.hero-actions, .button-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -156,17 +144,18 @@ h3 {
   border: 0;
   border-radius: 999px;
   padding: 14px 20px;
+  min-height: 48px;
   font-weight: 800;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 9px;
+  text-decoration: none;
   transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-}
+.btn:hover { transform: translateY(-2px); }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--charcoal), #4b4238);
@@ -187,6 +176,8 @@ h3 {
 }
 
 .hero-card {
+  width: 100%;
+  min-width: 0;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(184, 137, 56, 0.16);
@@ -211,12 +202,15 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   padding: 14px 16px;
   background: rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 13px;
   color: rgba(255,255,255,0.78);
 }
+
+.scanner-topbar span { min-width: 0; }
 
 .status-dot {
   width: 8px;
@@ -235,13 +229,12 @@ h3 {
 .camera-stage {
   position: relative;
   flex: 1;
-  min-height: 430px;
+  min-height: clamp(300px, 58vh, 520px);
   background: #111;
   overflow: hidden;
 }
 
-video,
-canvas#processingCanvas {
+video, canvas#processingCanvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -270,7 +263,8 @@ canvas#processingCanvas {
 
 .guide-ring {
   position: absolute;
-  width: min(58vw, 260px);
+  width: clamp(150px, 48vw, 260px);
+  max-width: 72%;
   aspect-ratio: 1;
   border: 2px dashed rgba(241, 211, 154, 0.92);
   border-radius: 50%;
@@ -280,13 +274,13 @@ canvas#processingCanvas {
   box-shadow: 0 0 0 999px rgba(0,0,0,0.14), inset 0 0 36px rgba(184, 137, 56, 0.15);
 }
 
-.guide-ring::after {
-  content: "Align ring inner edge here";
+.guide-ring::after, .guide-finger::after {
   position: absolute;
   left: 50%;
   bottom: -38px;
   transform: translateX(-50%);
   white-space: nowrap;
+  max-width: 90vw;
   font-size: 12px;
   color: rgba(255,255,255,0.82);
   background: rgba(0,0,0,0.36);
@@ -295,10 +289,13 @@ canvas#processingCanvas {
   padding: 6px 10px;
 }
 
+.guide-ring::after { content: "Align ring inner edge here"; }
+
 .guide-finger {
   position: absolute;
-  width: min(38vw, 172px);
-  height: min(72vw, 340px);
+  width: clamp(110px, 32vw, 172px);
+  height: clamp(240px, 56vh, 340px);
+  max-height: 78%;
   border: 2px dashed rgba(241, 211, 154, 0.92);
   border-radius: 90px;
   inset: 50% auto auto 50%;
@@ -307,20 +304,7 @@ canvas#processingCanvas {
   box-shadow: 0 0 0 999px rgba(0,0,0,0.12), inset 0 0 36px rgba(184, 137, 56, 0.14);
 }
 
-.guide-finger::after {
-  content: "Place finger straight inside guide";
-  position: absolute;
-  left: 50%;
-  bottom: -38px;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 12px;
-  color: rgba(255,255,255,0.82);
-  background: rgba(0,0,0,0.36);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 999px;
-  padding: 6px 10px;
-}
+.guide-finger::after { content: "Place finger straight inside guide"; }
 
 .scanner-controls {
   display: grid;
@@ -348,30 +332,16 @@ canvas#processingCanvas {
   font-weight: 800;
 }
 
-.segmented button.active {
-  background: white;
-  color: var(--charcoal);
-}
+.segmented button.active { background: white; color: var(--charcoal); }
 
-.section {
-  padding: 46px 0;
-}
+.section { padding: 42px 0; }
 
-.grid-3,
-.grid-2 {
-  display: grid;
-  gap: 18px;
-}
-
-.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
+.grid-3, .grid-2 { display: grid; gap: 18px; min-width: 0; }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .card {
+  min-width: 0;
   background: rgba(255,255,255,0.82);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -393,21 +363,13 @@ canvas#processingCanvas {
   background: linear-gradient(135deg, rgba(184,137,56,0.16), rgba(184,137,56,0.04));
   color: var(--gold-dark);
   margin-bottom: 14px;
+  font-weight: 900;
 }
 
-.muted {
-  color: var(--muted);
-}
+.muted { color: var(--muted); }
 
-.form-grid {
-  display: grid;
-  gap: 14px;
-}
-
-.field {
-  display: grid;
-  gap: 7px;
-}
+.form-grid { display: grid; gap: 14px; }
+.field { display: grid; gap: 7px; min-width: 0; }
 
 .field label {
   font-size: 13px;
@@ -415,9 +377,9 @@ canvas#processingCanvas {
   color: var(--charcoal);
 }
 
-input,
-select {
+input, select {
   width: 100%;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 14px;
@@ -426,24 +388,25 @@ select {
   outline: none;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
   border-color: var(--gold);
   box-shadow: 0 0 0 4px rgba(184, 137, 56, 0.14);
 }
 
 .result-panel {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 16px;
 }
 
 .metric {
+  min-width: 0;
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 14px;
+  color: var(--charcoal);
 }
 
 .metric small {
@@ -453,7 +416,8 @@ select:focus {
 }
 
 .metric strong {
-  font-size: 22px;
+  font-size: clamp(19px, 5vw, 22px);
+  word-break: break-word;
 }
 
 .notice {
@@ -472,7 +436,9 @@ select:focus {
 }
 
 .size-table-wrap {
+  width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border);
   border-radius: 24px;
   background: white;
@@ -481,12 +447,11 @@ select:focus {
 
 table {
   width: 100%;
-  min-width: 680px;
+  min-width: 620px;
   border-collapse: collapse;
 }
 
-th,
-td {
+th, td {
   padding: 14px 16px;
   text-align: left;
   border-bottom: 1px solid rgba(35, 32, 29, 0.08);
@@ -501,9 +466,7 @@ th {
   letter-spacing: 0.08em;
 }
 
-tr:last-child td {
-  border-bottom: 0;
-}
+tr:last-child td { border-bottom: 0; }
 
 .steps {
   counter-reset: step;
@@ -538,13 +501,9 @@ tr:last-child td {
   text-align: center;
 }
 
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
-.fade-up {
-  animation: fadeUp 0.65s ease both;
-}
+.fade-up { animation: fadeUp 0.65s ease both; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
@@ -556,52 +515,63 @@ tr:last-child td {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@media (max-width: 860px) {
-  .hero,
-  .grid-2,
-  .grid-3 {
+@media (max-width: 980px) {
+  .hero {
     grid-template-columns: 1fr;
+    align-items: start;
   }
 
-  .nav-links {
-    display: none;
+  .hero-card {
+    max-width: 720px;
+    margin: 0 auto;
   }
 
-  .scanner-shell {
-    min-height: 580px;
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+  .page { width: min(100% - 24px, 1180px); }
+  .nav-links { display: none; }
+  .hero { gap: 20px; padding-top: 14px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .scanner-shell { min-height: auto; }
+  .scanner-topbar {
+    align-items: flex-start;
+    flex-direction: column;
   }
+  .camera-stage { min-height: 430px; }
+  .scanner-controls .grid-2 { gap: 10px; }
+  .hero-actions, .button-row { flex-direction: column; }
+  .btn { width: 100%; }
 }
 
 @media (max-width: 520px) {
-  .page {
-    width: min(100% - 20px, 1180px);
-  }
+  .page { width: min(100% - 18px, 1180px); }
+  .brand { font-size: 14px; }
+  .brand-mark { width: 38px; height: 38px; }
+  .eyebrow { font-size: 12px; }
+  h1 { font-size: clamp(34px, 11vw, 46px); }
+  h2 { font-size: clamp(26px, 8vw, 34px); }
+  h3 { font-size: 20px; }
+  .hero-card { padding: 10px; border-radius: 26px; }
+  .scanner-shell { border-radius: 22px; }
+  .camera-stage { min-height: 390px; }
+  .scanner-controls { padding: 12px; }
+  .segmented { border-radius: 18px; grid-template-columns: 1fr; }
+  .segmented button { border-radius: 14px; }
+  .card { padding: 18px; border-radius: 22px; }
+  .result-panel { grid-template-columns: 1fr; }
+  .section { padding: 32px 0; }
+  table { min-width: 540px; }
+  th, td { padding: 12px; }
+}
 
-  .hero {
-    padding-top: 18px;
-  }
-
-  .hero p {
-    font-size: 16px;
-  }
-
-  .hero-card,
-  .card {
-    border-radius: 24px;
-  }
-
-  .result-panel {
-    grid-template-columns: 1fr;
-  }
-
-  .button-row,
-  .hero-actions {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-  }
+@media (max-width: 380px) {
+  .page { width: min(100% - 14px, 1180px); }
+  .camera-stage { min-height: 350px; }
+  .guide-ring { width: 145px; }
+  .guide-finger { width: 105px; height: 230px; }
+  .notice { font-size: 14px; }
 }
 
   </style>
@@ -766,45 +736,4 @@ tr:last-child td {
 </section>
 
 <footer class="footer">
-  Built for premium ecommerce experiences. Always confirm valuable jewellery purchases with a professional measurement.
-</footer>
-
-  </div>  <script>
-    const sizeChart = [
-      { india: 1, us: 1, diameter: 12.7 },
-      { india: 2, us: 2, diameter: 13.3 },
-      { india: 3, us: 2.5, diameter: 13.7 },
-      { india: 4, us: 3, diameter: 14.1 },
-      { india: 5, us: 3.5, diameter: 14.5 },
-      { india: 6, us: 3.75, diameter: 14.9 },
-      { india: 7, us: 4, diameter: 15.3 },
-      { india: 8, us: 4.5, diameter: 15.7 },
-      { india: 9, us: 5, diameter: 15.9 },
-      { india: 10, us: 5.25, diameter: 16.1 },
-      { india: 11, us: 5.5, diameter: 16.5 },
-      { india: 12, us: 6, diameter: 16.9 },
-      { india: 13, us: 6.5, diameter: 17.3 },
-      { india: 14, us: 7, diameter: 17.7 },
-      { india: 15, us: 7.25, diameter: 18.1 },
-      { india: 16, us: 7.5, diameter: 18.5 },
-      { india: 17, us: 8, diameter: 18.9 },
-      { india: 18, us: 8.5, diameter: 19.3 },
-      { india: 19, us: 8.75, diameter: 19.7 },
-      { india: 20, us: 9.25, diameter: 20.1 },
-      { india: 21, us: 9.5, diameter: 20.3 },
-      { india: 22, us: 10, diameter: 20.7 },
-      { india: 23, us: 10.25, diameter: 21.1 },
-      { india: 24, us: 10.75, diameter: 21.5 },
-      { india: 25, us: 11, diameter: 21.9 },
-      { india: 26, us: 11.5, diameter: 22.3 },
-      { india: 27, us: 12, diameter: 22.7 },
-      { india: 28, us: 12.25, diameter: 23.1 },
-      { india: 29, us: 12.75, diameter: 23.5 },
-      { india: 30, us: 13, diameter: 23.9 }
-    ].map(row => ({ ...row, circumference: row.diameter * Math.PI }));
-
-    const referenceMM = {
-      card: 85.60,
-      coin10: 27.00,
-      ruler10: 10.00,
-   
+  
