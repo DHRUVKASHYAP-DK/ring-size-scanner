@@ -1,0 +1,810 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Ring Size Scanner</title>
+  <style>
+    :root {
+      --bg: #fbf7ef;
+      --card: #ffffff;
+      --card-soft: #fffaf1;
+      --charcoal: #23201d;
+      --muted: #766f66;
+      --gold: #b88938;
+      --gold-dark: #8f6425;
+      --gold-soft: #f1dfbd;
+      --border: rgba(35, 32, 29, 0.12);
+      --success: #2e7d55;
+      --danger: #b84a3b;
+      --shadow: 0 24px 70px rgba(40, 31, 19, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(184, 137, 56, 0.14), transparent 34rem),
+    linear-gradient(180deg, #fffaf1 0%, var(--bg) 52%, #fff 100%);
+  color: var(--charcoal);
+  line-height: 1.5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.page {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #efd29b);
+  display: grid;
+  place-items: center;
+  color: white;
+  box-shadow: 0 12px 30px rgba(184, 137, 56, 0.24);
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.nav-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  gap: 28px;
+  align-items: center;
+  padding: 34px 0 52px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold-dark);
+  background: rgba(184, 137, 56, 0.12);
+  border: 1px solid rgba(184, 137, 56, 0.22);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.04em;
+  line-height: 1.03;
+}
+
+h1 {
+  font-size: clamp(42px, 7vw, 78px);
+  max-width: 760px;
+}
+
+h2 {
+  font-size: clamp(30px, 4.2vw, 48px);
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: var(--muted);
+  font-size: 18px;
+  max-width: 620px;
+}
+
+.hero-actions,
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--charcoal), #4b4238);
+  color: white;
+  box-shadow: 0 16px 34px rgba(35, 32, 29, 0.24);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), #e5c078);
+  color: #261b0d;
+  box-shadow: 0 16px 34px rgba(184, 137, 56, 0.22);
+}
+
+.btn-soft {
+  background: #fff;
+  color: var(--charcoal);
+  border: 1px solid var(--border);
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(184, 137, 56, 0.16);
+  box-shadow: var(--shadow);
+  border-radius: 36px;
+  padding: 18px;
+  animation: floatIn 0.8s ease both;
+}
+
+.scanner-shell {
+  background: var(--charcoal);
+  color: white;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.scanner-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  color: rgba(255,255,255,0.78);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #9a9a9a;
+  display: inline-block;
+  margin-right: 7px;
+}
+
+.status-dot.live {
+  background: #4fe084;
+  box-shadow: 0 0 0 8px rgba(79, 224, 132, 0.1);
+}
+
+.camera-stage {
+  position: relative;
+  flex: 1;
+  min-height: 430px;
+  background: #111;
+  overflow: hidden;
+}
+
+video,
+canvas#processingCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+canvas#processingCanvas {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.camera-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  text-align: center;
+  color: rgba(255,255,255,0.76);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(184, 137, 56, 0.28), transparent 9rem),
+    linear-gradient(160deg, #2d2822, #111);
+  z-index: 2;
+}
+
+.guide-ring {
+  position: absolute;
+  width: min(58vw, 260px);
+  aspect-ratio: 1;
+  border: 2px dashed rgba(241, 211, 154, 0.92);
+  border-radius: 50%;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  box-shadow: 0 0 0 999px rgba(0,0,0,0.14), inset 0 0 36px rgba(184, 137, 56, 0.15);
+}
+
+.guide-ring::after {
+  content: "Align ring inner edge here";
+  position: absolute;
+  left: 50%;
+  bottom: -38px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255,255,255,0.82);
+  background: rgba(0,0,0,0.36);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.guide-finger {
+  position: absolute;
+  width: min(38vw, 172px);
+  height: min(72vw, 340px);
+  border: 2px dashed rgba(241, 211, 154, 0.92);
+  border-radius: 90px;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  box-shadow: 0 0 0 999px rgba(0,0,0,0.12), inset 0 0 36px rgba(184, 137, 56, 0.14);
+}
+
+.guide-finger::after {
+  content: "Place finger straight inside guide";
+  position: absolute;
+  left: 50%;
+  bottom: -38px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255,255,255,0.82);
+  background: rgba(0,0,0,0.36);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.scanner-controls {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  padding: 6px;
+  border-radius: 999px;
+}
+
+.segmented button {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px;
+  color: rgba(255,255,255,0.78);
+  background: transparent;
+  font-weight: 800;
+}
+
+.segmented button.active {
+  background: white;
+  color: var(--charcoal);
+}
+
+.section {
+  padding: 46px 0;
+}
+
+.grid-3,
+.grid-2 {
+  display: grid;
+  gap: 18px;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card {
+  background: rgba(255,255,255,0.82);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: 0 18px 50px rgba(40, 31, 19, 0.08);
+}
+
+.soft-card {
+  background: var(--card-soft);
+  border: 1px solid rgba(184, 137, 56, 0.18);
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(184,137,56,0.16), rgba(184,137,56,0.04));
+  color: var(--gold-dark);
+  margin-bottom: 14px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.form-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--charcoal);
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: white;
+  color: var(--charcoal);
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(184, 137, 56, 0.14);
+}
+
+.result-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.metric {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.metric small {
+  color: var(--muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.metric strong {
+  font-size: 22px;
+}
+
+.notice {
+  background: rgba(184, 137, 56, 0.12);
+  border: 1px solid rgba(184, 137, 56, 0.24);
+  border-radius: 18px;
+  padding: 14px 16px;
+  color: #62420d;
+  font-weight: 650;
+}
+
+.danger {
+  background: rgba(184, 74, 59, 0.1);
+  border-color: rgba(184, 74, 59, 0.22);
+  color: var(--danger);
+}
+
+.size-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 18px 50px rgba(40, 31, 19, 0.07);
+}
+
+table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(35, 32, 29, 0.08);
+  font-size: 14px;
+}
+
+th {
+  background: #fff8e9;
+  color: #684512;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.steps {
+  counter-reset: step;
+  display: grid;
+  gap: 14px;
+}
+
+.step {
+  position: relative;
+  padding-left: 52px;
+}
+
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--charcoal);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.footer {
+  padding: 42px 0 56px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.fade-up {
+  animation: fadeUp 0.65s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .scanner-shell {
+    min-height: 580px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    width: min(100% - 20px, 1180px);
+  }
+
+  .hero {
+    padding-top: 18px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .hero-card,
+  .card {
+    border-radius: 24px;
+  }
+
+  .result-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .button-row,
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="nav">
+      <div class="brand">
+        <div class="brand-mark">◇</div>
+        <span>Maison Size</span>
+      </div>
+      <div class="nav-links">
+        <a href="#scanner">Scanner</a>
+        <a href="#calculator">Calculator</a>
+        <a href="#manual">Manual Guide</a>
+        <a href="#chart">Size Chart</a>
+      </div>
+    </nav><header class="hero">
+  <div class="fade-up">
+    <div class="eyebrow">Camera-based ring size estimation</div>
+    <h1>Measure your ring size with your phone camera.</h1>
+    <p>
+      Calibrate using a card, ₹10 coin, ruler, or A4 paper, then scan an existing ring or finger to estimate Indian size, US size, diameter, and circumference.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#scanner">Start Camera Scanner</a>
+      <a class="btn btn-soft" href="#calculator">Use Manual Calculator</a>
+    </div>
+  </div>
+
+  <div class="hero-card" id="scanner">
+    <div class="scanner-shell">
+      <div class="scanner-topbar">
+        <span><span id="liveDot" class="status-dot"></span><span id="cameraStatus">Camera not started</span></span>
+        <span id="scaleStatus">Scale: not calibrated</span>
+      </div>
+
+      <div class="camera-stage" id="cameraStage">
+        <video id="video" playsinline muted></video>
+        <canvas id="processingCanvas"></canvas>
+        <div id="placeholder" class="camera-placeholder">
+          <div>
+            <div style="font-size:48px;margin-bottom:10px;">◌</div>
+            <h3>Premium Ring Scanner</h3>
+            <p style="max-width:360px;margin:10px auto 0;color:rgba(255,255,255,.68);">
+              Start camera, place a reference object beside the ring or finger, calibrate scale, then measure.
+            </p>
+          </div>
+        </div>
+        <div id="guideOverlay" class="guide-ring hidden"></div>
+      </div>
+
+      <div class="scanner-controls">
+        <div class="segmented">
+          <button id="modeRing" class="active" type="button">Existing Ring</button>
+          <button id="modeFinger" type="button">Finger</button>
+        </div>
+
+        <div class="grid-2" style="gap:10px;">
+          <div class="field">
+            <label for="referenceType" style="color:rgba(255,255,255,.82);">Calibration reference</label>
+            <select id="referenceType">
+              <option value="card">Credit / Debit Card width — 85.60 mm</option>
+              <option value="coin10">₹10 coin diameter — 27.00 mm</option>
+              <option value="ruler10">Ruler segment — 10.00 mm</option>
+              <option value="a4width">A4 paper width — 210.00 mm</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="referencePixels" style="color:rgba(255,255,255,.82);">Reference size on screen, px</label>
+            <input id="referencePixels" type="number" min="10" placeholder="Auto/Manual px" />
+          </div>
+        </div>
+
+        <div class="button-row" style="margin-top:0;">
+          <button class="btn btn-gold" id="startCamera" type="button">Start Camera</button>
+          <button class="btn btn-soft" id="calibrateBtn" type="button">Calibrate</button>
+          <button class="btn btn-primary" id="measureBtn" type="button">Measure Now</button>
+        </div>
+
+        <div id="scannerMessage" class="notice">
+          Camera-based ring sizing gives an approximate size. For best accuracy, measure 2–3 times or confirm with a jeweller.
+        </div>
+
+        <div id="scanResults" class="result-panel hidden">
+          <div class="metric"><small>Indian Size</small><strong id="scanIndia">—</strong></div>
+          <div class="metric"><small>US Size</small><strong id="scanUS">—</strong></div>
+          <div class="metric"><small>Diameter</small><strong id="scanDiameter">—</strong></div>
+          <div class="metric"><small>Circumference</small><strong id="scanCircumference">—</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="notice">
+    Camera-based ring sizing gives an approximate size. For best accuracy, measure 2–3 times or confirm with a jeweller.
+  </div>
+</section>
+
+<section class="section">
+  <h2>How calibration works</h2>
+  <p class="muted">The camera needs a known real-world object in the same plane as the ring or finger. This webpage estimates millimeters per pixel from the reference, then converts the detected ring diameter or finger width into ring size.</p>
+  <div class="grid-3" style="margin-top:20px;">
+    <div class="card"><div class="icon">01</div><h3>Place reference</h3><p class="muted">Put a debit card, ₹10 coin, ruler mark, or A4 sheet beside the ring or finger.</p></div>
+    <div class="card"><div class="icon">02</div><h3>Calibrate scale</h3><p class="muted">The page detects bright rectangular/circular edges or lets you enter pixel width manually.</p></div>
+    <div class="card"><div class="icon">03</div><h3>Measure</h3><p class="muted">Align the object inside the guide. The canvas detects edges and converts pixels to millimeters.</p></div>
+  </div>
+</section>
+
+<section class="section grid-2" id="calculator">
+  <div class="card soft-card">
+    <h2>Ring Size Calculator</h2>
+    <p class="muted">Enter either inner diameter or circumference. The nearest Indian and US size will be shown instantly.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="diameterInput">Diameter in mm</label>
+        <input id="diameterInput" type="number" step="0.01" placeholder="Example: 17.30" />
+      </div>
+      <div class="field">
+        <label for="circumferenceInput">Circumference in mm</label>
+        <input id="circumferenceInput" type="number" step="0.01" placeholder="Example: 54.40" />
+      </div>
+      <button class="btn btn-primary" id="calculateManual" type="button">Calculate Size</button>
+    </div>
+    <div id="manualResults" class="result-panel hidden">
+      <div class="metric"><small>Indian Size</small><strong id="manualIndia">—</strong></div>
+      <div class="metric"><small>US Size</small><strong id="manualUS">—</strong></div>
+      <div class="metric"><small>Diameter</small><strong id="manualDiameter">—</strong></div>
+      <div class="metric"><small>Circumference</small><strong id="manualCircumference">—</strong></div>
+    </div>
+  </div>
+
+  <div class="card" id="manual">
+    <h2>Manual Backup Methods</h2>
+    <div class="steps">
+      <div class="step"><h3>Measure inner ring diameter</h3><p class="muted">Place your ring on a ruler and measure the inside edge to inside edge in millimeters.</p></div>
+      <div class="step"><h3>Measure finger circumference</h3><p class="muted">Wrap a thin strip of paper around your finger, mark the overlap, then measure the strip length.</p></div>
+      <div class="step"><h3>Use printable size strip</h3><p class="muted">Print at 100% scale only. Cut the strip, wrap it around your finger, and read the marked size.</p></div>
+      <div class="step"><h3>Check the size chart</h3><p class="muted">Compare your diameter or circumference with the nearest size in the chart below.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="chart">
+  <h2>Ring Size Chart</h2>
+  <p class="muted">Approximate conversion table. Sizes vary slightly by jeweller and ring profile.</p>
+  <div class="size-table-wrap" style="margin-top:18px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Indian Size</th>
+          <th>US Size</th>
+          <th>Diameter mm</th>
+          <th>Circumference mm</th>
+        </tr>
+      </thead>
+      <tbody id="chartBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer class="footer">
+  Built for premium ecommerce experiences. Always confirm valuable jewellery purchases with a professional measurement.
+</footer>
+
+  </div>  <script>
+    const sizeChart = [
+      { india: 1, us: 1, diameter: 12.7 },
+      { india: 2, us: 2, diameter: 13.3 },
+      { india: 3, us: 2.5, diameter: 13.7 },
+      { india: 4, us: 3, diameter: 14.1 },
+      { india: 5, us: 3.5, diameter: 14.5 },
+      { india: 6, us: 3.75, diameter: 14.9 },
+      { india: 7, us: 4, diameter: 15.3 },
+      { india: 8, us: 4.5, diameter: 15.7 },
+      { india: 9, us: 5, diameter: 15.9 },
+      { india: 10, us: 5.25, diameter: 16.1 },
+      { india: 11, us: 5.5, diameter: 16.5 },
+      { india: 12, us: 6, diameter: 16.9 },
+      { india: 13, us: 6.5, diameter: 17.3 },
+      { india: 14, us: 7, diameter: 17.7 },
+      { india: 15, us: 7.25, diameter: 18.1 },
+      { india: 16, us: 7.5, diameter: 18.5 },
+      { india: 17, us: 8, diameter: 18.9 },
+      { india: 18, us: 8.5, diameter: 19.3 },
+      { india: 19, us: 8.75, diameter: 19.7 },
+      { india: 20, us: 9.25, diameter: 20.1 },
+      { india: 21, us: 9.5, diameter: 20.3 },
+      { india: 22, us: 10, diameter: 20.7 },
+      { india: 23, us: 10.25, diameter: 21.1 },
+      { india: 24, us: 10.75, diameter: 21.5 },
+      { india: 25, us: 11, diameter: 21.9 },
+      { india: 26, us: 11.5, diameter: 22.3 },
+      { india: 27, us: 12, diameter: 22.7 },
+      { india: 28, us: 12.25, diameter: 23.1 },
+      { india: 29, us: 12.75, diameter: 23.5 },
+      { india: 30, us: 13, diameter: 23.9 }
+    ].map(row => ({ ...row, circumference: row.diameter * Math.PI }));
+
+    const referenceMM = {
+      card: 85.60,
+      coin10: 27.00,
+      ruler10: 10.00,
+   
